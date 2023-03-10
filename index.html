@@ -1,64 +1,52 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <meta charset="utf-8">
-    <title>Modifica profilo</title>
+    <meta charset="UTF-8">
+    <title>Profilo</title>
   </head>
   <body>
-    <h1>Modifica profilo</h1>
-    <form>
+    <form method="POST" action="/salva">
       <label for="nome">Nome:</label>
-      <input type="text" id="nome" name="nome" value="Mario" disabled>
-
+      <input type="text" id="nome" name="nome" value="Mario Rossi">
+      <br>
       <label for="email">Email:</label>
-      <input type="email" id="email" name="email" value="mario@example.com" disabled>
-
+      <input type="email" id="email" name="email" value="mario.rossi@example.com">
+      <br>
       <label for="interessi">Interessi:</label>
-      <textarea id="interessi" name="interessi" disabled>Sport, viaggi, musica</textarea>
-
-      <button id="modifica" type="button">Modifica</button>
-      <button id="salva" type="button" disabled>Salva</button>
+      <input type="text" id="interessi" name="interessi" value="Musica, Cinema, Viaggi">
+      <br>
+      <button type="submit" id="salva">Salva</button>
+      <button type="button" id="modifica">Modifica</button>
     </form>
-
     <script>
-      const modificaBtn = document.querySelector('#modifica');
-      const salvaBtn = document.querySelector('#salva');
-      const nomeInput = document.querySelector('#nome');
-      const emailInput = document.querySelector('#email');
-      const interessiTextarea = document.querySelector('#interessi');
+      const form = document.querySelector('form');
+      const nome = form.querySelector('#nome');
+      const email = form.querySelector('#email');
+      const interessi = form.querySelector('#interessi');
+      const salva = form.querySelector('#salva');
+      const modifica = form.querySelector('#modifica');
 
-      modificaBtn.addEventListener('click', () => {
-        nomeInput.disabled = false;
-        emailInput.disabled = false;
-        interessiTextarea.disabled = false;
+      function disabilitaCampi() {
+        nome.setAttribute('disabled', 'disabled');
+        email.setAttribute('disabled', 'disabled');
+        interessi.setAttribute('disabled', 'disabled');
+        salva.setAttribute('disabled', 'disabled');
+      }
 
-        modificaBtn.disabled = true;
-        salvaBtn.disabled = false;
+      function abilitaCampi() {
+        nome.removeAttribute('disabled');
+        email.removeAttribute('disabled');
+        interessi.removeAttribute('disabled');
+        salva.removeAttribute('disabled');
+      }
+
+      form.addEventListener('submit', (event) => {
+        event.preventDefault();
+        disabilitaCampi();
       });
 
-      salvaBtn.addEventListener('click', () => {
-        const nome = nomeInput.value;
-        const email = emailInput.value;
-        const interessi = interessiTextarea.value;
-
-        const xhr = new XMLHttpRequest();
-        xhr.open('POST', '/salva');
-        xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
-        xhr.onload = () => {
-          if (xhr.status === 200) {
-            console.log(`Salvato il profilo di ${nome} (${email}): ${interessi}`);
-
-            nomeInput.disabled = true;
-            emailInput.disabled = true;
-            interessiTextarea.disabled = true;
-
-            modificaBtn.disabled = false;
-            salvaBtn.disabled = true;
-          } else {
-            console.error(`Errore durante il salvataggio del profilo: ${xhr.status}`);
-          }
-        };
-        xhr.send(`nome=${encodeURIComponent(nome)}&email=${encodeURIComponent(email)}&interessi=${encodeURIComponent(interessi)}`);
+      modifica.addEventListener('click', () => {
+        abilitaCampi();
       });
     </script>
   </body>
