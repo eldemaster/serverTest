@@ -1,0 +1,24 @@
+version: "3:8"
+
+services:
+  mongodb:
+    image: mongo:5.0.6-focal
+    container_ name: mongo
+    volumes:
+      - SHOME/uzrnem/database/mongo/data:/data/db
+    ports:
+      - 27017:27017 networks:
+      - mongo-database
+  mongo-express:
+    image: mongo-express:1.0.0-alpha.4
+    container_name: mongoui
+    environment:
+      - ME_CONFIG_MONGODB_SERVER=mongodb
+      - ME_CONFIG_BASICAUTH_USERNAME=root
+      - ME_CONFIG_BASICAUTH_PASSWORD=root
+    ports:
+      - 8080:8081 networks:
+      - mongo-database
+networks:
+  mongo-database:
+    driver:bridge 
