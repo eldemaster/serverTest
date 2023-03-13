@@ -1,13 +1,14 @@
-version: "3:8"
+version: "3.8"
 
 services:
   mongodb:
     image: mongo:5.0.6-focal
     container_ name: mongo
     volumes:
-      - SHOME/uzrnem/database/mongo/data:/data/db
+      - $HOME/uzrnem/database/mongo/data:/data/db
     ports:
-      - 27017:27017 networks:
+      - 27017:27017 
+    networks:
       - mongo-database
   mongo-express:
     image: mongo-express:1.0.0-alpha.4
