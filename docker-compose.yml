@@ -1,25 +1,20 @@
-version: "3.8"
+version: '3.1'
 
 services:
-  mongodb:
-    image: mongo:5.0.6-focal
-    container_ name: mongo
-    volumes:
-      - $HOME/uzrnem/database/mongo/data:/data/db
-    ports:
-      - 27017:27017 
-    networks:
-      - mongo-database
-  mongo-express:
-    image: mongo-express:1.0.0-alpha.4
-    container_name: mongoui
+
+  mongo:
+    image: mongo:4.4.15
+    restart: always
     environment:
-      - ME_CONFIG_MONGODB_SERVER=mongodb
-      - ME_CONFIG_BASICAUTH_USERNAME=root
-      - ME_CONFIG_BASICAUTH_PASSWORD=root
+      MONGO_INITDB_ROOT_USERNAME: root
+      MONGO_INITDB_ROOT_PASSWORD: example
+
+  mongo-express:
+    image: mongo-express
+    restart: always
     ports:
-      - 8080:8081 networks:
-      - mongo-database
-networks:
-  mongo-database:
-    driver:bridge 
+      - 8081:8081
+    environment:
+      ME_CONFIG_MONGODB_ADMINUSERNAME: root
+      ME_CONFIG_MONGODB_ADMINPASSWORD: example
+      ME_CONFIG_MONGODB_URL: mongodb://root:example@mongo:27017/
