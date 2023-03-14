@@ -1,11 +1,25 @@
-var express = require( 'express');
-var path = require( 'path');
-var fs = require( 'fs');
-var app = express () ;
-app.get ('/', function (req, res) {
-res.sendFile(path. join(__dirname, "index. html"));
+const http = require('http');
+const fs = require('fs');
+
+const server = http.createServer((req, res) => {
+  if (req.url === '/') {
+    // Leggi il file index.html dal disco
+    fs.readFile('./index.html', (err, data) => {
+      if (err) {
+        res.writeHead(500);
+        res.end(`Errore: ${err}`);
+      } else {
+        // Invia il contenuto del file come risposta
+        res.writeHead(200, {'Content-Type': 'text/html'});
+        res.end(data);
+      }
+    });
+  } else {
+    res.writeHead(404);
+    res.end('Pagina non trovata');
+  }
 });
 
-app. listen (3000, function () {
-console. log ("app listening on port 3000!");
+server.listen(3000, () => {
+  console.log('Il server è in ascolto sulla porta 3000');
 });
